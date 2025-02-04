@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #2c3e50; }
+        h2 { color: #16a085; }
+        .container { max-width: 800px; margin: auto; }
+        .section { margin-bottom: 20px; }
+        .item { padding: 10px; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать в HW_2!</h1>
+
+        <div class="section">
+            <h2>Фильмы</h2>
+            {% for movie in movies %}
+                <div class="item">
+                    <strong>{{ movie.title }}</strong><br>
+                    <em>Продюсер:</em> {{ movie.producer }}<br>
+                    <em>Длительность:</em> {{ movie.duration }} секунд<br>
+                    <p>{{ movie.description }}</p>
+                </div>
+            {% empty %}
+                <p>Фильмов пока нет.</p>
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h2>Статьи</h2>
+            {% for article in articles %}
+                <div class="item">
+                    <strong>{{ article.title }}</strong><br>
+                    <em>Автор:</em> {{ article.author }}<br>
+                    <p>{{ article.text }}</p>
+                </div>
+            {% empty %}
+                <p>Статей пока нет.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
