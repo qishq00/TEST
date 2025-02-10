@@ -1,11 +1,11 @@
 from django.db import models
 
-# Create your models here.
-
 class Post(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=255)
     description = models.TextField()
-    author = models.CharField(max_length=100)
+    author = models.CharField(max_length=255)
 
-    def __str__(self):
+    def _str_(self):
         return self.title
+
+# Create your models here.

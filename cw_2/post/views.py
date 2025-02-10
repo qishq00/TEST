@@ -1,34 +1,53 @@
-from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_exempt
 from .models import Post
-from .forms import PostForm
+from django import forms
 
-# Получение всех постов
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'description', 'author']
+
+
 def get_posts(request):
-    posts = Post.objects.all().values()
-    return JsonResponse(list(posts), safe=False)
+    posts = list(Post.objects.values())
+    return JsonResponse(posts, safe=False)
 
-# Получение одного поста
-def get_post(request, id):
+
+def get_post_by_id(request, id):
     post = get_object_or_404(Post, id=id)
-    return JsonResponse({'title': post.title, 'description': post.description, 'author': post.author})
+    return JsonResponse({
+        "id": post.id,
+        "title": post.title,
+        "description": post.description,
+        "author": post.author
+    })
 
-# Создание поста через Django Forms
+
+@csrf_exempt
 def create_post(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/posts/')  # Перенаправляем после создания
+            return redirect('/posts/')  
     else:
         form = PostForm()
-    return render(request, 'post/create_post.html', {'form': form})
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
-# Удаление поста
+
+@csrf_exempt
 def delete_post(request, id):
     post = get_object_or_404(Post, id=id)
     post.delete()
-    return redirect('/posts/')  # После удаления перенаправляем
+    return redirect('/posts/')
+
+from django.shortcuts import render
+from .models import Post
+
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'post/post_list.html', {'posts': posts})
+
