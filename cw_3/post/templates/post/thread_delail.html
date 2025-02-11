@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center mb-3">{{ thread.name }}</h2>
+<p class="text-muted">{{ thread.description }}</p>
+
+<h3 class="mt-4">Посты:</h3>
+
+{% if posts %}
+<div class="row">
+    {% for post in posts %}
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.description }}</p>
+                <p class="text-muted">Автор: {{ post.author }}</p>
+                <a href="{% url 'post_edit' post.id %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'post_delete' post.id %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">Пока нет постов.</p>
+{% endif %}
+
+<!-- Кнопка добавления поста -->
+<button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addPostModal">+ Добавить пост</button>
+
+<!-- Модальное окно добавления поста -->
+<div class="modal fade" id="addPostModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить пост</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'thread_detail' thread.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Заголовок</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Описание</label>
+                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Автор</label>
+                        <input type="text" class="form-control" name="author" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
