@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center fw-bold mb-4" style="color: #ff5e62;">To-Do Lists</h2>
+
+<!-- Кнопка для создания нового списка -->
+<div class="text-center mb-4">
+    <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#addTodoListModal">
+        ➕ Создать новый список
+    </button>
+</div>
+
+<div class="row">
+    {% for todo_list in todo_lists %}
+    <div class="col-md-4 mb-4">
+        <div class="card p-3">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold">{{ todo_list.title }}</h5>
+                <p class="card-text text-muted">{{ todo_list.description|truncatewords:15 }}</p>
+                <a href="{% url 'todo_list_detail' todo_list.id %}" class="btn btn-custom">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Модальное окно для создания туду-листа -->
+<div class="modal fade" id="addTodoListModal" tabindex="-1" aria-labelledby="addTodoListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTodoListModalLabel">Создать новый список</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-custom w-100">Создать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

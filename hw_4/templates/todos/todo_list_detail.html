@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center fw-bold" style="color: #ff5e62;">{{ todo_list.title }}</h2>
+<p class="text-center text-muted">{{ todo_list.description }}</p>
+
+<!-- Кнопка для добавления задачи -->
+<div class="text-center mb-3">
+    <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#addTodoModal">
+        ➕ Добавить задачу
+    </button>
+</div>
+
+<div class="row">
+    {% for todo in todos %}
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <div class="card-body">
+                <h5 class="card-title fw-bold">{{ todo.title }}</h5>
+                <p class="card-text text-muted">{{ todo.description }}</p>
+                <p><strong>Дата выполнения:</strong> {{ todo.due_date }}</p>
+                <p class="text-end text-muted"><small>{% if todo.status %}✅ Выполнено{% else %}⏳ В процессе{% endif %}</small></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Модальное окно для создания задачи -->
+<div class="modal fade" id="addTodoModal" tabindex="-1" aria-labelledby="addTodoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTodoModalLabel">Добавить новую задачу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-custom w-100">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
