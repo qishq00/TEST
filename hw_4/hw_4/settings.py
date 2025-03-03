@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--8x3)cf6ha3_5x8ie+1ivu*ut%qv%&(s_nrtkly&iiq#m_u%q_'
+SECRET_KEY = 'django-insecure-zi%=ig2+6-4z@zc-qay0m)&f_nl0r$$!04m7jube5$^=&frupp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'todos',
+    'todos',  # Добавили наше приложение
 ]
 
 MIDDLEWARE = [
@@ -52,12 +52,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hw_4.urls'
 
-import os
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,7 +67,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'hw_4.wsgi.application'
 
