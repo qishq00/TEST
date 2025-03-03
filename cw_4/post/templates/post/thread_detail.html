@@ -1,0 +1,51 @@
+{% extends "post/base.html" %}
+
+{% block content %}
+<h1>{{ thread.name }}</h1>
+<p>{{ thread.description }}</p>
+
+<h2>Посты:</h2>
+
+<!-- Кнопка для вызова модального окна -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostModal">
+    ➕ Добавить пост
+</button>
+
+<!-- Модальное окно с формой -->
+<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPostModalLabel">Добавить пост</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'post_create' thread.id %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-success">Сохранить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Вывод списка постов -->
+{% for post in thread.post_set.all %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.description }}</p>
+            <p><strong>Автор:</strong> {{ post.author }}</p>
+            
+            {% if post.picture %}
+                <img src="{{ post.picture.url }}" alt="Изображение" class="img-fluid">
+            {% endif %}
+
+            <a href="{% url 'post_edit' post.id %}" class="btn btn-warning">✏ Изменить</a>
+            <a href="{% url 'post_delete' post.id %}" class="btn btn-danger">🗑 Удалить</a>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

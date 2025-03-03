@@ -1,0 +1,5 @@
+{% if post.picture %}
+    <img src="{{ post.picture.url }}" alt="Изображение" class="img-fluid">
+{% else %}
+    <p>Нет изображения</p>
+{% endif %}

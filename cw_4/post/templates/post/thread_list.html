@@ -1,0 +1,50 @@
+{% extends 'post/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Список Тем</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createThreadModal">
+        Создать новую тему
+    </button>
+
+    <div class="row">
+        {% for thread in threads %}
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ thread.name }}</h5>
+                    <p class="card-text">{{ thread.description }}</p>
+                    <a href="{% url 'thread_detail' id=thread.id %}" class="btn btn-primary">
+                        🧵 Открыть
+                    </a>
+                    
+                    <a href="{% url 'thread_edit' thread.id %}" class="btn btn-warning btn-sm">✏ Изменить</a>
+                    <a href="{% url 'thread_delete' thread.id %}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Вы уверены?');">🗑 Удалить</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Нет созданных тем.</p>
+        {% endfor %}
+    </div>
+
+    <div class="modal fade" id="createThreadModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создать тему</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Создать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
