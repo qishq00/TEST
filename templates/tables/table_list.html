@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Список столов{% endblock %}
+
+{% block content %}
+<h2>Список столов</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Мест</th>
+            <th>Доступность</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for table in tables %}
+        <tr>
+            <td>{{ table.number }}</td>
+            <td>{{ table.seats }}</td>
+            <td>{% if table.is_available %}✅{% else %}❌{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
